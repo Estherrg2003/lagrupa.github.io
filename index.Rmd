@@ -1,0 +1,248 @@
+---
+title: "Entrega final"
+author: "Esther  Rodríguez  (20201838), Ruth Canahuiri (20200829),Maria Fernanda Alejo (20190480) y Antonio Rios (20190130)"
+date: '2023-07-12'
+output: 
+   rmdformats::readthedown
+---
+
+```{r}
+library(rmdformats)
+library(rio)
+```
+
+
+```{r}
+BD=import("BD.xlsx")
+library(RColorBrewer)
+```
+
+1. Glosario de variables
+
++ Variable dependiente
+
+  + Migración: "migra" en la base de datos y se mide a través del número de movimientos realizados por los migrantes
+
++ Variables independientes
+
+  + Tasa de desempleo: "unemp_rate" en la base de datos y se mide a través de un porcentaje
+
+  + Índice de Gini: "gini_index" en la base de datos y se utiliza una medida de 0 a 1
+
+  + Derechos Humanos: "dd_hh" en la base de datos y se utiliza una medida de 0 a 1
+
+  + PBI per cápita: "pbi_per" en la base de datos y se mide a través del promedio de producto bruto por cada
+  persona
+
+  + Ingreso mensual: "ingreso_m" en la base de datos y se mide en euros 
+
+  + Emisiones de C02: "co2" en la base de datos y se mide a través de toneladas métricas per cápita
+
+  + Índice de Desarrollo Humano: "des_huma" en la base de datos y se utiliza una medida de 0 a 1
+
+  + Índice de democracia: "dem_ratio" en la base de datos y se mide en una escala de 0 a 10
+
+  + Índice de pacifidad: "paci" en la base de datos y se mide a través de un porcentaje
+
+  + Libertad económica: "econ_free" en la base de datos y se mide un índice
+
+  + Índice de pobreza económica multidimensional: "povertyratio" en la base de datos y se mide a través de un
+  porcentaje  
+
+  + Índice de Estados fallidos: "fragil_ind_score" en la base de datos y se mide a través de un índice
+
+
+2. Objetivo del reporte
+
++ Se busca demostrar si el fenómeno migratorio, la variable de interés, posee relación y puede ser explicada
+  mediante las variables independientes propuestas 
+  
++ Se tiene por objeto investigar cuáles de las variables independientes planteadas explican en mayor o menor
+  medida la variable dependiente, a la vez que se espera explorar y descubrir la estructura subyacente de las
+  mismas
+  
++ Se orienta a la identificación de patrones o estructuras que se encuentren dentro del conjunto de datos
+  recopilado, de manera que se puedan agrupar objetos similares entre sí
+
+
+3. Construcción de la base de datos
+
++ Fenómeno de la investigación 
+
+  El primer paso en el proceso de construcción de la base de datos ha sido delimitar el fenómeno a investigar y
+  explicar. La base de datos para la variable dependiente fue obtenida de Agencia Central de Inteligencia de los
+  Estados Unidos, quienes definen esta variable como la diferencia entre el número de personas que entran y salen
+  de un país durante el año por cada 1000 personas. Cuando el caso tiene valor positivo, significa un exceso de
+  personas que ingresan al país (por ejemplo, 3.56 migrantes/1000 habitantes). Por otro lado, un exceso de
+  personas que salen del país torna el valor en negativo (por ejemplo, -9.26 migrantes/1000 habitantes).
+  
++ Fuentes consultadas para investigar el fenómeno 
+
+  La consulta de bibliografía ha constituido el primer paso de aproximación con el fenómeno a nivel mundial, 
+  puesto que ha permitido a los y las investigadoras recolectar variables independientes pertinentes para efectos
+  de la investigación. Estas son las siguientes: 
+  
+   + Tasa de desempleo, extraída de
+   
+   + Índice de Gini, extraído de
+   
+   + PBI per cápita, extraído de
+   
+   + Emisiones de CO2, extraídas de
+   
+   + Ingreso mensual, extraído de
+
+   + Libertad económica, extraída de
+   
+   + Índice de pobreza económica multidimensional, extraído de
+   
+   + Índice de Estados fallidos, extraído de
+   
+   + Índice de democracia, extraído de
+   
+   + Derechos Humanos, extraídos de
+   
+   + Índice de Desarrollo Humano, extraído de
+   
+   + Índice de pacifidad, extraído de
+  
+  Así pues, se tuvo por objeto que la estrecha relación teórica entre las variables revisadas con la migración se
+  exprese tanto en las correlaciones realizadas como en los demás procesos realizados posteriormente.  
+  
+
+3. Modelo de regresión 
+
+  + Correlaciones: 
+  
+    Como proceso previo a la construcción del modelo de regresión, se efectuaron las correlaciones     respectivas entre cada variable independiente incluida en la investigación y la variable de
+    interés. Al respecto, se ha de mencionar que en la regresión elegida, todas las variables     
+    explicativas en el modelo se correlacionan con la variable dependiente, a excepción de la 
+    variable "Derechos Humanos". 
+    
+  + Variables utilizadas:
+  
+    + Tasa de desempleo
+
+    + PBI per cápita
+
+    + Emisiones de CO2
+
+    + Ingreso mensual
+
+    + Libertad económica
+
+    + Índice de pobreza económica multidimensional
+
+    + Índice de Estados fallidos
+
+    + Índice de democracia
+
+    + Derechos Humanos
+  
+  + Objetivo del proceso:
+  
+    El modelo elegido tuvo por objetivo observar si la variable relativa a los Derechos Humanos,
+    cuya correlación fue no relevante, aumenta su capacidad explicativa en combinación con un
+    conjunto de variables independientes con mayor correlación. 
+    
+    
+  + Resultados del proceso
+  
+```{r}
+#Modelo elegido
+modelo=lm(migra~fragil_ind_score+povertyratio+econ_free+unemp_rate+dem_ratio+pbi_per+co2+dd_hh+ingreso_m,data=BD)
+summary(modelo)
+```
+    + Ecuación del modelo:  y=4.038 - 4.221(x1) +8.959(x2) - -5.105(x3) +4.057(x4) + 3.508(x5) +
+    1.205 (x6) + 3.929 (x7) - 3.877(x8) - 8.058(x9)
+    
+```{r}
+#Estandarizamos los coeficientes del segundo modelo 
+library(modelsummary)
+model=formula(scale(migra)~scale(fragil_ind_score)+scale(povertyratio)+scale(econ_free)+scale(unemp_rate)+scale(dem_ratio)+scale(pbi_per)+scale(co2)+scale(ingreso_m)+scale(dd_hh))
+reg=lm(model,BD)
+model=list(reg)
+modelsummary(model, title = "Regresion: modelo con coeficientes estandarizados",
+             stars = TRUE,
+             output = "kableExtra")
+```
+
++ Elección del modelo: La justificación de su elección reside, en primera instancia, en la validez del modelo tras observar el p-value menor a 0.05. En este caso, se obtuvo que el PBI  per cápita lidera como la variable que mayor aporta al modelo y, en cambio, el ingreso mensual se sitúa como la variable con menor potencial de explicación. Ahora bien, este último tiene la capacidad de explicar al fenómeno migratorio en un 60,7%, siendo el mayor porcentaje obtenido en las tres regresiones formuladas. 
+
+ + Cumplimiento de requisitos 
+    
+    El modelo elegido cumple únicamente con los requisitos de linealidad y homocedasticidas. Bajo 
+    esta premisa, el modelo se enfrenta a las siguientes dificultades:
+    
+    + En tanto la distribución de los residuos no es normal, la capacidad de realizar inferencias
+      se ve limitada 
+      
+    + En cuando al VIF test, cuatro de las nueve variables del modelo han obtenido un coeficiente
+      mayor a 5, por lo que existe una fuerte correlación que evita calcular apropiadamente el
+      efecto de cada regresor
+      
+    + En vista de que se encontraron filas en donde existen valores influyentes, los cálculos del
+      modelo de regresión ha sido afectado
+      
+
+4. Técnica de Conglomerados 
+   
+   La técnica realizada en la investigación surgió como alternativa ante la inviabilidad de la aplicación del Análisis Factorial, dado que, pese a obtener un KMO de 0.85, al redimensionar la data en los tres factores sugeridos, la insuficiencia de la misma impidió continuar con el procedimiento. En ese sentido, se ejecutaron las tres técnicas de clusterización estudiadas, siendo la más óptima la realizada vía el algoritmo DIANA.
+
+  + Proceso de clusterización
+  
+```{r}
+#Tipificando la distribución de los datos
+data=BD[complete.cases(BD),]
+library(BBmisc)
+boxplot(normalize(data[,c(3:15)],method='range',range=c(0,10)))
+boxplot(normalize(data[,c(3:15)],method='standardize'))
+```
+    
+```{r}
+#Obteniendo la cantidad de clusters
+subclus=data[,c(3:15)]
+library(factoextra)
+fviz_nbclust(subclus, hcut,diss=g.dist,method = "gap_stat",k.max = 10,verbose = F,hc_func = "diana")
+```
+
+```{r}
+#Clusterización vía DIANA
+library(cluster)
+library(kableExtra)
+g.dist = daisy(subclus, metric="gower")
+res.diana=hcut(g.dist, k = 2,hc_func='diana')
+subclus$diana=res.diana$cluster
+head(subclus,15)%>%kbl%>%kable_styling()
+```
+
+```{r}
+#Observando el proceso en el dendograma
+fviz_dend(res.diana, cex = 0.7, horiz = T, main = "")
+```
+
+```{r}
+#Obteniendo los países mal clusterizados
+silDIANA=data.frame(res.diana$silinfo$widths)
+silDIANA$country=row.names(silDIANA)
+poorDIANA=silDIANA[silDIANA$sil_width<0,'country']%>%sort()
+poorDIANA
+```
+
+```{r}
+#Observando gráficamente los países mal clusterizados
+fviz_silhouette(res.diana,print.summary = F)
+```
+
+```{r}
+#Calulando el promedio de cada cluster
+subclus$diana=res.diana$cluster
+aggregate(.~ diana, data=subclus,mean)
+```
+
+  + Resultados del proceso de clusterización
+  
+    Tras ejecutar los 2 factores sugeridos, resalta la no obtención de países mal clusterizados, lo que posiciona a esta técnica como la mejor en comparación a las
+    demaaás técnicas realizadas, en las que los resultados no son concluyentes como en este caso. 
+
+  
